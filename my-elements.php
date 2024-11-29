@@ -2,7 +2,7 @@
 
 /**
  * Plugin Name: My Elemets
- * Version: 1.2  
+ * Version: 1.5
  * Author: My Elemets 
  * Text Domain: my-elemets  
  */
