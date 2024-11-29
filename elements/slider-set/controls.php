@@ -2,15 +2,46 @@
 
 namespace Elementor;
 
-if (!defined('ABSPATH')) exit; // Exit if accessed directly
-
-class ML_Product_Slider_2 extends Widget_Base
+if (!defined('ABSPATH')) exit;
+class ML_slider_set extends Widget_Base
 {
-	public function get_name() { return 'ml-product-slider-2'; }
-	public function get_title() { return __('Product Slider 2 ', 'my-elements'); }
-	public function get_categories() { return ['my-element-slider']; }
+	public function get_name()
+	{
+		return __('ML_slider_set', 'healthray');
+	}
+	public function get_title()
+	{
+		return __('ML Slider Set', 'healthray');
+	}
+	public function get_categories()
+	{
+		return ['my-element-slider'];
+	}
+
 	protected function register_controls()
 	{
+		$this->start_controls_section(
+			'section_content_k_fgjadf',
+			[
+				'label' => esc_html__('Slider Style', 'list-widget'),
+				'tab' => \Elementor\Controls_Manager::TAB_CONTENT,
+			]
+		);
+		$this->add_control(
+			'slider_style',
+			[
+				'label' => __('Slider Style', 'medicate'),
+				'type' => Controls_Manager::SELECT,
+				'default' => '1',
+				'options' => [
+					'1'  => __('Style 1', 'medicate'),
+					'2'  => __('Style 2', 'medicate'),
+				],
+			]
+		);
+		$this->end_controls_section();
+
+
 		$this->start_controls_section(
 			'section_content',
 			[
@@ -89,12 +120,13 @@ class ML_Product_Slider_2 extends Widget_Base
 		$btn = new ML_Slider_Controls();
 		$btn->get_slider_btn_controls($this);
 	}
+
+
+
 	protected function render()
 	{
-		$html = '';
 
 		$settings = $this->get_settings();
-		$tabs = $this->get_settings_for_display('reapeter');
 
 		$this->add_render_attribute('slider', 'data-dots', $settings['dots']);
 		$this->add_render_attribute('slider', 'data-nav', $settings['nav_arrow']);
@@ -106,35 +138,13 @@ class ML_Product_Slider_2 extends Widget_Base
 		$this->add_render_attribute('slider', 'data-autoplay', $settings['autoplay']);
 		$this->add_render_attribute('slider', 'data-loop', $settings['loop']);
 		$this->add_render_attribute('slider', 'data-margin', $settings['margin']['size']);
-?>
 
-<div class="section-procuct">
-	<div class="healthray-products-slider owl-carousel owl-theme" <?= $this->get_render_attribute_string('slider'); ?>>
-		<?php foreach ($tabs as $index => $item) { ?>
-		 
-			<div class="product-slider">
-				<div class="half-width">
-					<div class="product-content">
-						<h2> <?= esc_html($item['title_text']); ?></h2>
-						<p><?= $this->parse_text_editor($item['description_text']); ?></p>
-						<div class='content_style'>
-							<?= $this->parse_text_editor($item['description_content']) ?>
-						</div>
-					</div>
-				</div>
-				<div class="half-width">
-					<div class="product-image image">
-						<?php if (!empty($item['image']['id'])) { ?> <div class="slide-img"> <?= wp_get_attachment_image($item['image']['id'], 'full');  ?></div> <?php } ?>
-					</div>
-				</div>
-			</div> 
-		<?php } ?>
 
-	</div>
-</div>
-<?php
+		if ($settings['slider_style'] == '1') {
+			require plugin_dir_path(__FILE__) . 'style-1.php';
+		} else {
+			require plugin_dir_path(__FILE__) . 'style-2.php';
+		}
 	}
-
 }
-
-Plugin::instance()->widgets_manager->register(new ML_Product_Slider_2());
+Plugin::instance()->widgets_manager->register_widget_type(new \Elementor\ML_slider_set());

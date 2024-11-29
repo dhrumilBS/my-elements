@@ -362,7 +362,7 @@ class Ml_Widget_Doctor_Reviews extends Widget_Base
 		$this->end_controls_section();
 
 
-		$btn = new Slider_Controls();
+		$btn = new ML_Slider_Controls();
 		$btn->get_slider_btn_controls($this);
 	}
 

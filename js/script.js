@@ -63,7 +63,45 @@ function owl_carousel(e) {
 				}
 			}
 		});
+		if (jQuery('.custom-toggle-tabs').length > 0) {
+			jQuery('.custom-toggle-tabs li:first').addClass('active');
+			jQuery('.custom-toggle-tabs').on('click', 'li', function (e) {
+				jQuery(this).addClass('active');
+				jQuery(this).siblings().removeClass('active');
+				app_slider.trigger('to.owl.carousel', [jQuery(this).index(), 300]);
+			});
+			app_slider.on('changed.owl.carousel', function (event) {
+				var currentIndex = event.item.index;
+				jQuery('.custom-toggle-tabs li').removeClass('active');
+				jQuery('.custom-toggle-tabs li').eq(currentIndex).addClass('active');
+			})
+		}
+
+
+
+		// Custom Pagination Functionality
+		jQuery(".custom-pagination .dot").on("click", function () {
+			const slideIndex = jQuery(this).data("slide");
+			app_slider.trigger("to.owl.carousel", [slideIndex, 300]);
+			jQuery(".custom-pagination .dot").removeClass("active");
+			jQuery(this).addClass("active");
+		});
+
+		app_slider.on("changed.owl.carousel", function (event) {
+			const currentIndex = event.item.index - event.relatedTarget._clones.length / 2;
+			const realIndex = currentIndex < 0 ? event.item.count - 1 : currentIndex % event.item.count;
+
+			jQuery(".custom-pagination .dot").removeClass("active");
+			jQuery(".custom-pagination .dot").eq(realIndex).addClass("active");
+		});
+
+		// Initialize first dot as active
+		jQuery(".custom-pagination .dot").eq(0).addClass("active");
+
+
 	});
+
+
 }
 
 // ============================= Healthray Tab  ->   healthray-tabs/controls.php =====================================
@@ -72,7 +110,7 @@ function healthrayTabs(e) {
 	jQuery('.content.active').outerHeight();
 	e.find(".tab-toggle").on('click', function() {
 		var content = jQuery(this).parent().next(".content"),
-			activeItems = e.find(".active"); 
+			activeItems = e.find(".active");
 		if (!jQuery(this).hasClass('active')) { jQuery(this).add(content).add(activeItems).toggleClass('active'); e.css('min-height', content.outerHeight()); }
 	});
 	jQuery(window).on('load', function() { e.find(".tab-toggle").first().trigger('click'); });
@@ -152,7 +190,7 @@ jQuery(window).on('elementor/frontend/init', function () {
 	elementorFrontend.hooks.addAction('frontend/element_ready/ml-product-slider-2.default', owl_carousel);
 
 	elementorFrontend.hooks.addAction('frontend/element_ready/ml-alternative.default', alternative);
-	elementorFrontend.hooks.addAction('frontend/element_ready/custom_toggle.default', customToggle); 
+	elementorFrontend.hooks.addAction('frontend/element_ready/custom_toggle.default', customToggle);
 	elementorFrontend.hooks.addAction('frontend/element_ready/healthray-tabs.default', healthrayTabs);
 
 	elementorFrontend.hooks.addAction('frontend/element_ready/ml_slider.default', new_slider);

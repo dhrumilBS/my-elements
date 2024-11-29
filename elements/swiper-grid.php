@@ -26,7 +26,7 @@ class Ml_Swiper_Widget extends Widget_Base
 		);
 		$this->end_controls_section();
 
-		$btn = new Slider_Controls();
+		$btn = new ML_Slider_Controls();
 		$btn->get_slider_btn_controls($this);
 	}
 	protected function render()

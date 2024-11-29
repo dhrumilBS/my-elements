@@ -8,8 +8,7 @@ class ML_EHR_Product_Slider extends Widget_Base
 {
 	public function get_name() { return 'ml-ehr-product-slider'; }
 	public function get_title() { return __('EHR Product Slider ', 'my-elements'); }
-	public function get_categories() { return ['my-element']; }
-	public function get_style_depends() { return [ 'widget-style-1', 'widget-style-2' ]; }
+	public function get_categories() { return ['my-element-slider']; }
 	protected function register_controls()
 	{
 		$this->start_controls_section(
@@ -166,7 +165,7 @@ class ML_EHR_Product_Slider extends Widget_Base
 		);
 		$this->end_controls_section();
 
-		$btn = new Slider_Controls();
+		$btn = new ML_Slider_Controls();
 		$btn->get_slider_btn_controls($this);
 		
 
